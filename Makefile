@@ -101,7 +101,9 @@ proto-rootgen-image:
 	IMAGE_TAG=${PROTO_ROOTGEN_IMAGE} \
 	./scripts/build.sh proto-rootgen
 
-images: vpp-image dev-image prod-image tester-image mockcnf-image
+images:
+
+images1: vpp-image dev-image prod-image tester-image mockcnf-image
 	# tag latest images
 	docker tag ${STONEWORK_PROD_IMAGE}:${VPP_VERSION} ${STONEWORK_PROD_IMAGE}
 	docker tag ${MOCK_CNF_IMAGE}:${VPP_VERSION} ${MOCK_CNF_IMAGE}
@@ -150,7 +152,10 @@ release: dev-image prod-image
 #  Testing
 # -------------------------------
 
-test: unit-tests e2e-tests
+test:
+	./scripts/debug.sh
+
+test-1: unit-tests e2e-tests
 
 unit-tests:
 	go test ./...
