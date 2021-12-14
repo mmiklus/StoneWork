@@ -16,6 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+echo "DEBUG: lsmod | grep vrf"
+lsmod | grep vrf 
+
+echo "DEBUG: modprobe vrf"
+modprobe vrf
+
+echo "DEBUG: lsmod | grep vrf"
+lsmod | grep vrf
+
 trap "exit 1" TERM
 export TOP_PID=$$
 
@@ -37,6 +47,7 @@ function check_rv { # parameters: actual rv, expected rv, error message
 
 function check_in_sync {
     echo -n "Checking if StoneWork is in-sync ... "
+    docker exec stonework curl -X POST localhost:9191/scheduler/downstream-resync?verbose=1
     docker exec stonework curl -X POST localhost:9191/scheduler/downstream-resync?verbose=1 2>&1 \
         | grep -qi -E "Executed|error"
     check_rv $? 1 "StoneWork is not in-sync"
